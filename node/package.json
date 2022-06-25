@@ -1,0 +1,15 @@
+{
+  "name": "hello-world-fullcycle",
+  "version": "1.0.0",
+  "description": "Hello World Docker App",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Luiz Honorato",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mysql": "^2.18.1"
+  }
+}

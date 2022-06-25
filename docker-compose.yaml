@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      context: ./node
+    networks:
+      - node-network
+    tty: true
+    container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s npm start
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: lhonorato/nginx:prod
+    container_name: nginx
+    networks:
+      - node-network
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+
+  db:
+    build: 
+      context: ./mysql
+      dockerfile: ./docker/Dockerfile
+    image: lhonorato/mysql:prod
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    volumes:
+    - ./mysql/data:/var/lib/mysql
+    networks:
+      - node-network
+
+networks:
+  node-network:
+    driver: bridge
